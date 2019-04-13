@@ -3,6 +3,12 @@ During preparation, the text file is read in chunks and the bytes of the lines a
 
 When the API is called, the line bytes are retrieved from the array and a createReadStream is opened in the position of the line to be read.
 
+## Routing
+The route for the API which returns the line is
+__/lines/:line__
+
+Example: http://localhost:3000/lines/1
+
 # File Handling
 Sample data has approximately 4GB and performs great during load. I would expect that as file size grows bigger, a database index for where to start reading the stream (line bytes) would be more adequate.
 
