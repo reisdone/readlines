@@ -33,9 +33,10 @@ class Fileservice {
 
   async readline(line: number): Promise<string> {
     if (this._index.length < line) {
+        return Promise.resolve("");
     }
-    const startByte: number = this._index[line - 1] + 4;
-    const endByte: number = this._index[line] + 4;
+    const startByte: number = this._index[line - 1];
+    const endByte: number = this._index[line];
 
     const stream = fs.createReadStream(this._file, {
       encoding: "ascii",

@@ -8,6 +8,12 @@ const fileservice = new Fileservice("./build/data/itcont.txt");
 console.log("started");
 app.get("/lines/:line", async function(req, res) {
   const lineResult = await fileservice.readline(req.params.line);
+  if(lineResult === ''){
+     res.statusCode=413;
+     res.end(); 
+     return;
+  }
+  
   res.write(lineResult);
   res.statusCode = 200;
   res.end();
