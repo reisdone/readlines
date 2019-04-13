@@ -1,21 +1,20 @@
-import express = require('express');
-import fs = require('fs');
- 
- 
-console.log('after calling readFile');
+import express = require("express");
+import { Fileservice } from "./services/fileservice";
 
 // Create a new express application instance
 const app: express.Application = express();
+const fileservice = new Fileservice("./build/data/itcont.txt");
 
-app.get('/lines/:line', function (req, res) {
-    fs.readFile('./build/data.txt', 'ascii', function(err, contents) {
-        if(err){
-            console.error(err.message);
-        }
-        res.send(contents);
-    });
+console.log("started");
+app.get("/lines/:line", async function(req, res) {
+  const lineResult = await fileservice.readline(req.params.line);
+  res.write(lineResult);
+  res.statusCode = 200;
+  res.end();
 });
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+app.listen(3000, function() {
+    // index line bytes
+  fileservice.index();
+  console.log("Example app listening on port 3000!");
 });
