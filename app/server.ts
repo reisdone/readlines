@@ -3,7 +3,7 @@ import { Fileservice } from "./services/fileservice";
 
 // Create a new express application instance
 const app: express.Application = express();
-const fileservice = new Fileservice("./build/data/itcont.txt");
+let fileservice:Fileservice;
 
 console.log("started");
 app.get("/lines/:line", async function(req, res) {
@@ -20,6 +20,9 @@ app.get("/lines/:line", async function(req, res) {
 });
 
 app.listen(3000, function() {
+  const filePath:string = process.argv[2];
+  fileservice= new Fileservice(filePath);
+  console.log(filePath);
     // index line bytes
   fileservice.index();
   console.log("Example app listening on port 3000!");

@@ -1,7 +1,6 @@
 "use strict";
 import fs = require("fs");
 import es = require("event-stream");
-import os = require("os");
 
 const newLineBytes = Buffer.byteLength('\n', 'ascii');
 class Fileservice {

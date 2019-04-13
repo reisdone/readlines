@@ -4,7 +4,7 @@
   "description": "Salsify challenge",
   "main": "build/server.js",
   "scripts": {
-    "start": "node --inspect=5858 -r ts-node/register ./app/server.ts",
+    "start": "node --inspect=5858 -r ts-node/register ./app/server.ts 'build/data/itcont.txt'",
     "start:watch": "nodemon",
     "build": "tsc"
   },
