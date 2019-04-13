@@ -13,7 +13,7 @@ app.get("/lines/:line", async function(req, res) {
      res.end(); 
      return;
   }
-  
+
   res.write(lineResult);
   res.statusCode = 200;
   res.end();

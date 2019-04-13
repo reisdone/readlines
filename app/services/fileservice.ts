@@ -1,7 +1,9 @@
 "use strict";
 import fs = require("fs");
 import es = require("event-stream");
+import os = require("os");
 
+const newLineBytes = Buffer.byteLength('\n', 'ascii');
 class Fileservice {
   _file: string;
   _index: Array<number> = [];
@@ -13,18 +15,22 @@ class Fileservice {
   index() {
     let index: Array<number> = [];
     let bytes: number = 0;
+    
+    // start of file
+    index.push(0);
 
+    // read the stream and store line byte length
     const stream = fs
       .createReadStream(this._file, {
         encoding: "ascii",
         flags: "r"
       })
-      .pipe(es.split()) //split stream to break on newlines
+      .pipe(es.split('\n')) //split stream to break on newlines
       .pipe(
         es.mapSync(function(line: string) {
-          bytes += Buffer.byteLength(line, "ascii");
-          const lineStartByte: number = bytes;
-          index.push(lineStartByte);
+          bytes += Buffer.byteLength(line, "ascii") + newLineBytes;
+          const lineBytes: number = bytes;
+          index.push(lineBytes);
         })
       );
 
@@ -32,11 +38,13 @@ class Fileservice {
   }
 
   async readline(line: number): Promise<string> {
-    if (this._index.length < line) {
-        return Promise.resolve("");
+    if (this._index.length <= line) {
+      return Promise.resolve("");
     }
+    // line start bytes
     const startByte: number = this._index[line - 1];
-    const endByte: number = this._index[line];
+    // next line start bytes
+    const endByte: number = this._index[line] - 1 - newLineBytes;
 
     const stream = fs.createReadStream(this._file, {
       encoding: "ascii",
