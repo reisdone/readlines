@@ -17,7 +17,7 @@ console.log("started");
 app.get("/lines/:line", function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const lineResult = yield fileservice.readline(req.params.line);
-        if (lineResult === '') {
+        if (lineResult === "") {
             res.statusCode = 413;
             res.end();
             return;
@@ -29,6 +29,9 @@ app.get("/lines/:line", function (req, res) {
 });
 app.listen(3000, function () {
     const filePath = process.argv[2];
+    if (filePath === undefined || filePath.length <= 0) {
+        throw "Cannot start, data file is missing";
+    }
     fileservice = new fileservice_1.Fileservice(filePath);
     console.log(filePath);
     // index line bytes
